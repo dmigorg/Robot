@@ -38,8 +38,6 @@ class RequestTask extends \Phalcon\Cli\Task
         WHERE exam."DocsIssued" = TRUE AND doc."DocFlowStageId" <> -1 
         EOD;
 
-        $data =  $this->db->fetchAll($query, \Phalcon\Db\Enum::FETCH_NUM);
-
-        return $data;
+        return $this->db->fetchAll($query, \Phalcon\Db\Enum::FETCH_NUM);
     }
 }

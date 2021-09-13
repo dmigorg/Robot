@@ -34,8 +34,6 @@ class RemdTask extends \Phalcon\Cli\Task
         ORDER BY rlv."StageId" 
         EOD;
 
-        $data =  $this->db->fetchAll($query, \Phalcon\Db\Enum::FETCH_NUM);
-
-        return $data;
+        return $this->db->fetchAll($query, \Phalcon\Db\Enum::FETCH_NUM);
     }
 }

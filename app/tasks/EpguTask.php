@@ -37,8 +37,6 @@ class EpguTask extends \Phalcon\Cli\Task
         ORDER BY pgu."Value" , rlv."CreateTime" DESC
         EOD;
 
-        $data =  $this->db->fetchAll($query, \Phalcon\Db\Enum::FETCH_NUM);
-
-        return $data;
+        return $this->db->fetchAll($query, \Phalcon\Db\Enum::FETCH_NUM);
     }
 }

@@ -47,9 +47,7 @@ class FriTask extends \Phalcon\Cli\Task
 		)
         ORDER BY sev."ExamBuroId", sev."DecisionDate" DESC
         EOD;
-
-        $data =  $this->db->fetchAll($query, \Phalcon\Db\Enum::FETCH_NUM);
-
-        return $data;
+        
+        return $this->db->fetchAll($query, \Phalcon\Db\Enum::FETCH_NUM);
     }
 }
