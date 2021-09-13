@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-date_default_timezone_set('Europe/Moscow');
 
 use Phalcon\Di\FactoryDefault\Cli as CliDi;
 use Phalcon\Cli\Console as ConsoleApp;
@@ -36,6 +35,13 @@ $console = new ConsoleApp($di);
 
 $di->setShared("console", $console);
 
+
+$di->setShared('dispatcher', function () {
+    $dispatcher = new Phalcon\CLI\Dispatcher();
+    $dispatcher->setDefaultNamespace('Robot\Task');
+    return $dispatcher;
+});
+
 /**
  * Process the console arguments
  */
@@ -58,7 +64,8 @@ try {
      */
     $console->handle($arguments);
 
-} catch (Phalcon\Cli\Dispatcher\Exception $e) {
+} 
+catch (Phalcon\Cli\Dispatcher\Exception $e) {
     $arguments['task'] = 'help';
     $console->handle($arguments);
 }

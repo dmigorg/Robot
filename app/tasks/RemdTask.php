@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+namespace Robot\Task;
+
 class RemdTask extends \Phalcon\Cli\Task
 {
     public function mainAction()

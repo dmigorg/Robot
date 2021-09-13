@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+namespace Robot\Task;
+
 class FriTask extends \Phalcon\Cli\Task
 {
     public function mainAction()
@@ -38,13 +40,13 @@ class FriTask extends \Phalcon\Cli\Task
         AND (expdoc.val && '{528, 529}'
             OR expdoc.val && '{5, 38, 40, 45}'
         )
-		-- только свой узел
-		AND sev."ExamBuroId" IN (
-		  SELECT o."ORGANIZATION_ID"
-		  FROM "DicOrganization" o
-		  WHERE o."PARENT_ORGANIZATION_ID" IN (SELECT s."SettingValue"::int 
-		  FROM "ApplicationSettings" s WHERE s."SettingName" = 'CurrentOrganizationID')
-		)
+        -- только свой узел
+        AND sev."ExamBuroId" IN (
+         SELECT o."ORGANIZATION_ID"
+          FROM "DicOrganization" o
+          WHERE o."PARENT_ORGANIZATION_ID" IN (SELECT s."SettingValue"::int 
+          FROM "ApplicationSettings" s WHERE s."SettingName" = 'CurrentOrganizationID')
+        )
         ORDER BY sev."ExamBuroId", sev."DecisionDate" DESC
         EOD;
         

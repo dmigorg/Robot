@@ -2,12 +2,9 @@
 
 $loader = new \Phalcon\Loader();
 
-$loader->registerDirs([
-    APP_PATH . '/tasks'
-]);
-
 $loader->registerNamespaces(
     [
+        'Robot\Task' => APP_PATH . '/tasks',
         'Phalcon' => APP_PATH . '/library/Phalcon',
         'Cron' => APP_PATH . './library/Cron',
         'Sid\Cron' => APP_PATH . './library/Sid/Cron',
