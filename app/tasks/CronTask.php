@@ -8,9 +8,11 @@ class CronTask extends \Phalcon\Cli\Task
     public function mainAction()
     {
         $results = $this->cron->runInForeground();
-        
-        foreach($results as $res){
-            echo $res.PHP_EOL;
+
+        if(!empty($results)){
+            echo implode(PHP_EOL, $results);
+        } else {
+            echo 'No tasks available';
         }
     }
 }
