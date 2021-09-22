@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Robot\Task;
+namespace Robot\Tasks;
 
 class CronTask extends \Phalcon\Cli\Task
 {

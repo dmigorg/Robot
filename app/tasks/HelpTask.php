@@ -1,24 +1,35 @@
 <?php
 declare(strict_types=1);
 
-namespace Robot\Task;
+namespace Robot\Tasks;
+
+use Robot\Library\Helper;
 
 class HelpTask extends \Phalcon\Cli\Task
 {
     public function mainAction()
     {
-        $help = <<<END
+        $commands = <<<END
         Доступные команды:
-        robot version - Версия программы
-        robot help - Вывод доступных команд
+        robot task <Название_Задания> - Запуск задания
         robot cron - Запуск планировщика заданий
-        Запуск задания:
-        robot epgu - Необработанные заявления с ЕПГУ
-        robot fri - Данные не переданные во ФРИ
-        robot remd - Необработанные электронные направления
-        robot request - Незакрытые направления/заявления
+        robot help - Вывод доступных команд
+        robot version - Версия программы\n\n
         END;
+
+        echo $commands;
+        echo "Запуск задания:\n";
+        echo $this->getNameTask();
+    }
+
+    private function getNameTask() : string
+    {
+        $tasks = [];
+        foreach(Helper::tasksName() as $task) {
+            $ini = parse_ini_file(TASK_PATH."/$task/task.ini");
+            $tasks[]= 'robot task '.$task.' - '. $ini['description'];
+        } 
         
-        echo $help;
+        return implode(PHP_EOL, $tasks);
     }
 }

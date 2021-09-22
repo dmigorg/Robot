@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Robot\Task;
+namespace Robot\Tasks;
 
 class VersionTask extends \Phalcon\Cli\Task
 {
     public function mainAction()
     {
-        echo '2.5';
+        echo '3.0';
     }
 }

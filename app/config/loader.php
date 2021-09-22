@@ -4,7 +4,7 @@ $loader = new \Phalcon\Loader();
 
 $loader->registerNamespaces(
     [
-        'Robot\Task' => APP_PATH . '/tasks',
+        'Robot' => APP_PATH . '/',
         'Phalcon' => APP_PATH . '/library/Phalcon',
         'Cron' => APP_PATH . './library/Cron',
         'Sid\Cron' => APP_PATH . './library/Sid/Cron',

@@ -57,8 +57,6 @@ class Phalcon extends Job
 
         $console = $di->get("console");
 
-
-
         ob_start();
 
         $console->handle(

@@ -4,16 +4,20 @@ declare(strict_types=1);
 /**
  * Shared configuration service
  */
-$di->setShared('config', function () {
+$container->setShared('config', function () {
     return new Phalcon\Config\Adapter\Ini(BASE_PATH . '/config.ini');
 });
 
 /**
+ * Get config service for use in inline setup below
+ */
+$config = $container->getConfig();
+
+/**
  * Database connection is created based in the parameters defined in the configuration file
  */
-$di->setShared('db', function () {
-    $config = $this->getConfig();
-
+$container->setShared('db', 
+    function () use($config) {
     $params = [
         'host'     => $config->db->host,
         'username' => $config->db->username,
@@ -25,9 +29,9 @@ $di->setShared('db', function () {
     return new Phalcon\Db\Adapter\Pdo\Postgresql($params);
 });
 
-$di->setShared(
+$container->setShared(
     'transport',
-    function () {
+    function () use($config){
         $config = $this->getConfig();
         switch ($config->app->transport) {
             // Transport XMPP
@@ -70,17 +74,16 @@ $di->setShared(
     }
 );
 
-$di->set(
-    "cron",
-    function () {
-        $config = $this->getConfig();
+$container->set(
+    'cron',
+    function () use($config){
         $cron = new Sid\Phalcon\Cron\Manager();
 
         foreach($config->task->toArray() as $task => $time)
         {
             $cron->add(
                 new Sid\Phalcon\Cron\Job\Phalcon(
-                    $time, ["task" => $task]
+                    $time, ['task' => 'god', 'params' => [$task]]
                 )
             );
         }
