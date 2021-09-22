@@ -17,4 +17,4 @@ LEFT JOIN LATERAL (
 LIMIT 1) "examAct" ON true
 WHERE expdoc."ExpDocTypeId" IN (528,529) 
   AND expdoc."IssueDate" IS NULL
-  AND expdoc."CreateTime" BETWEEN current_date - '5 month'::INTERVAL AND current_timestamp
+  AND expdoc."CreateTime" BETWEEN current_date - '1 month'::INTERVAL AND current_timestamp
