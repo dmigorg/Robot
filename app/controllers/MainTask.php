@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Robot\Tasks;
+namespace Robot\Controllers;
 
 use Robot\Library\Helper;
 

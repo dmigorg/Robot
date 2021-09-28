@@ -1,2 +1,4 @@
 config.ini
-.vs
+custom.sql
+.vs/
+vendor/

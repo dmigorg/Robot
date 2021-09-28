@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Robot\Tasks;
+namespace Robot\Controllers;
 
 use Phalcon\Db\Enum;
+use Robot\Library\Helper;
 
 class GodTask extends \Phalcon\Cli\Task
 {
@@ -28,12 +29,12 @@ class GodTask extends \Phalcon\Cli\Task
 
     private function getParams(string $task) : array
     {
-        $path = TASK_PATH."/$task"; 
-        $ini = parse_ini_file("$path/task.ini");
-        $params[] = $ini['description'];
-        $params[] = $ini['header'];
-        $params[] = file_get_contents("$path/task.sql");
-
-        return $params;
+        list($description, $header) = Helper::getIniTask($task);
+        $sql = Helper::getSqlTask($task);
+        return [
+            $description,
+            $header,
+            $sql
+        ];
     }
 }

@@ -16,7 +16,7 @@ define('TASK_PATH', BASE_PATH . '/tasks');
 $container = new CliDi();
 $dispatcher = new Dispatcher();
 
-$dispatcher->setDefaultNamespace('Robot\Tasks');
+$dispatcher->setDefaultNamespace('Robot\Controllers');
 $container->setShared('dispatcher', $dispatcher);
 /**
  * Include Services

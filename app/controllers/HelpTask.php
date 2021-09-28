@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Robot\Tasks;
+namespace Robot\Controllers;
 
 use Robot\Library\Helper;
 
@@ -25,7 +25,8 @@ class HelpTask extends \Phalcon\Cli\Task
     private function getNameTask() : string
     {
         $tasks = [];
-        foreach(Helper::tasksName() as $task) {
+        foreach(Helper::tasksName() as $task) 
+        {
             $ini = parse_ini_file(TASK_PATH."/$task/task.ini");
             $tasks[]= 'robot task '.$task.' - '. $ini['description'];
         } 
