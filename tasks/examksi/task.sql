@@ -14,7 +14,7 @@ LEFT JOIN "ExaminationDiagnosis" diagnoz ON exam."Id" = diagnoz."ExaminationId"
 LEFT JOIN "DicPurposeGroup" g ON (g."Id" & exam."PurposeGroupId") = g."Id"
 LEFT JOIN "DicOrganization" org ON org."ORGANIZATION_ID" = exam."ExamBuroId"
 -- Кол-во дней ПДО. Исключается день проведения
-LEFT JOIN LATERAL (SELECT COALESCE(DATE_PART('day', exam."TransferDate" - exam."ExamTime") -1), 0) AS pdo_days(val) ON TRUE
+LEFT JOIN LATERAL (SELECT COALESCE(DATE_PART('day', exam."TransferDate" - exam."ExamTime") -1, 0)) AS pdo_days(val) ON TRUE
 -- Кол-во рабочих дней
 LEFT JOIN LATERAL(
   SELECT SUM(("CalendarOptions_IsWorkingDay"(org."PARENT_ORGANIZATION_ID", generate_series::date))::int)
