@@ -21,8 +21,9 @@ LEFT JOIN LATERAL(
   FROM generate_series(exam."RequestDate", current_date, '1 day')
 ) AS working_day(val) ON TRUE
 WHERE
-  -- Не:прекращено и Не:Завершено (документы выданы)
-  exam."IsStopped" = FALSE AND exam."DocsIssued" = FALSE
+  exam."RequestDate" > '20210101' 
+  -- Не:прекращено, Не:Завершено (документы выданы), Статус не удалено
+  AND (exam."IsStopped" = FALSE AND exam."DocsIssued" = FALSE AND exam."StateId" != -1)
   -- Только свой узел
   AND exam."ExamBuroId" IN (
     SELECT o."ORGANIZATION_ID"
