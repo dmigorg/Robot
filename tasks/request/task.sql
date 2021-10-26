@@ -11,4 +11,12 @@ JOIN "ExaminationRecordExamination" ere ON ere."ExaminationRecordId" = er."Id"
 JOIN "Examination" exam ON exam."Id" = ere."ExaminationId" 
 JOIN "DicOrganization" org ON org."ORGANIZATION_ID" = exam."ExamBuroId" 
 JOIN "DicDocumentType" ddt ON ddt."ID" = doc."DocumentTypeID" 
-WHERE exam."DocsIssued" = TRUE AND doc."DocFlowStageId" <> -1 
+WHERE exam."DocsIssued" = TRUE AND doc."DocFlowStageId" <> -1
+  -- Только свой узел
+  AND exam."ExamBuroId" IN (
+    SELECT o."ORGANIZATION_ID"
+    FROM "DicOrganization" o
+    WHERE o."PARENT_ORGANIZATION_ID" = (SELECT s."SettingValue"::int 
+      FROM "ApplicationSettings" s WHERE s."SettingName" = 'CurrentOrganizationID'
+    )
+  )
