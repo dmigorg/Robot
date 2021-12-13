@@ -7,6 +7,6 @@ class VersionTask extends \Phalcon\Cli\Task
 {
     public function mainAction()
     {
-        echo '3.1';
+        echo '3.2';
     }
 }

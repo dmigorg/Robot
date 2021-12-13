@@ -14,8 +14,13 @@ class MainTask extends \Phalcon\Cli\Task
                 $args = $this->task['arg'];
                 
                 if(empty($args)) {
-                    echo 'Task name is empty'.PHP_EOL;
-                    echo 'robot task <Название_Задания>';
+                    echo 'Список запланированных заданий:'.str_repeat(PHP_EOL, 2);
+                    foreach($this->config->task as $task=>$time) {
+                        list($description) = Helper::getIniTask($task);
+                        echo "robot task $task - $description".PHP_EOL;
+                        echo " $time".str_repeat(PHP_EOL, 2);
+                    }
+                    echo 'robot task <Название_Задания> - Запуск задания';
                     break;
                 } 
                 

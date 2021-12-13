@@ -11,6 +11,7 @@ class HelpTask extends \Phalcon\Cli\Task
     {
         $commands = <<<END
         Доступные команды:
+        robot task - Список запланированных заданий 
         robot task <Название_Задания> - Запуск задания
         robot cron - Запуск планировщика заданий
         robot help - Вывод доступных команд

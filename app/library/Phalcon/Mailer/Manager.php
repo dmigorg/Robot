@@ -256,6 +256,12 @@ class Manager extends Injectable implements EventsAwareInterface
 
         if (isset($config['encryption'])) {
             $transport->setEncryption($config['encryption']);
+            // Require verification of SSL certificate used.
+            if (($verifypeer = $this->getConfig('verifypeer')) !== null) {
+				$transport->setStreamOptions([
+                    $config['encryption'] => ['verify_peer' => (boolean)$verifypeer]
+                ]);
+			}
         }
 
         if (isset($config['host'])) {

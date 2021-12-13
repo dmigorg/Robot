@@ -32,7 +32,6 @@ $container->setShared('db',
 $container->setShared(
     'transport',
     function () use($config){
-        $config = $this->getConfig();
         switch ($config->app->transport) {
             // Transport XMPP
             case 'xmpp':
@@ -56,6 +55,7 @@ $container->setShared(
                         'host'       => $config->mail->host,
                         'port'       => $config->mail->port,
                         'encryption' => $config->mail->encryption,
+                        'verifypeer' => $config->mail->verifypeer ?? null,
                         'username'   => $config->mail->username,
                         'password'   => $config->mail->password,
                         'from'       => [

@@ -44,7 +44,12 @@ class Message
      * @var array
      */
     protected $failedRecipients = [];
-    protected $header;
+
+    /**
+     * Header for table
+     * @var string
+     */
+    protected $header = '';
 
     /**
      * Create a new Message using $mailer for sending from SwiftMailer
@@ -269,6 +274,16 @@ class Message
     }
 
     /**
+     * Set the header of table
+     *
+     * @param string $header
+     */
+    public function header($header)
+    {
+        $this->header = $header;
+    }
+
+    /**
      * Set the subject of this message.
      *
      * @param string $subject
@@ -277,10 +292,9 @@ class Message
      *
      * @see \Swift_Message::setSubject()
      */
-    public function subject($subject, $header)
+    public function subject($subject)
     {
         $this->getSwiftMessage()->setSubject($subject);
-        $this->header = $header;
         return $this;
     }
 

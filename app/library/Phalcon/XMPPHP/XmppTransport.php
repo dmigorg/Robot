@@ -12,6 +12,7 @@ class XmppTransport
     protected $sender;
     protected $content;
     protected $subject;
+    protected $header;
 
     protected $conn;
 
@@ -58,11 +59,16 @@ class XmppTransport
         return false;
     }
 
-    public function subject($subject = '', $header)
+    public function header($header)
     {
-        $this->subject = $subject." ($header)";
+        $this->header = $header;
     }
-    
+
+    public function subject($subject)
+    {
+        $this->subject = $subject." ($this->header)";
+    }
+
     public function content($data = []){
 
         $result = '';

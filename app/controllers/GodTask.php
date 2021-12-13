@@ -12,7 +12,8 @@ class GodTask extends \Phalcon\Cli\Task
     {
         list($subject, $header, $sql) = $this->getParams($task);
         $message = $this->transport->createMessage();
-        $message->subject($subject, $header);
+        $message->header($header);
+        $message->subject($subject);
         $message->content($this->compute($sql));
         
         // Send message

@@ -32,6 +32,8 @@ host        = smtp.yandex.com
 port        = 465
 ; использование шифрования
 encryption  = ssl
+; требовать проверки используемого SSL-сертификата
+verifypeer  = true
 ; имя пользователя для подключения к серверу
 username    = username@yandex.com
 ; пароль для подключения к серверу
