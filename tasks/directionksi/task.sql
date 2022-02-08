@@ -117,8 +117,8 @@ WITH par AS (
       ELSE ''
     END AS message,
     'Бюро №' || rec.orgname AS orgname,
-    rec.snils
-    -- to_char(rec."CreateTime", 'dd.mm.yyyy') AS "CreateTime",
+    rec.snils,
+    to_char(rec."CreateTime", 'dd.mm.yyyy') AS "CreateTime"
     -- to_char(rec."RegDate", 'dd.mm.yyyy') AS "RegDate",
     -- to_char(rec."AppointmentDT", 'dd.mm.yyyy') AS "AppointmentDT",
     -- to_char(rec."ExamTime", 'dd.mm.yyyy') AS "ExamTime",
