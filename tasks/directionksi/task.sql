@@ -79,7 +79,7 @@ WITH par AS (
       WHEN rec.stage_id NOT IN (-1, 1)
         AND rec."RegDate" IS NULL
         AND array_position(rec.working_days, current_date) > 1 
-      THEN 'Нарушены сроки регистрации направления'
+      THEN 'Ошибка! Cрок регистрации направления превышает 1 рабочий день'
       WHEN rec.stage_id NOT IN (-1, 1) 
         AND rec."AppointmentDT" IS NULL
         AND array_position(rec.working_days, current_date) > 1
