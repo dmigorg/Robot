@@ -83,12 +83,12 @@ WITH par AS (
       WHEN rec.stage_id NOT IN (-1, 1) 
         AND rec."AppointmentDT" IS NULL
         AND array_position(rec.working_days, current_date) > 1
-      THEN 'Отсутствует предварительная запись на МСЭ'
+      THEN 'Предупреждение! Отсутствует предварительная запись на МСЭ'
       WHEN rec.stage_id NOT IN (-1, 1) 
         AND rec."AppointmentDT" IS NOT NULL AND rec.req_special_notes && '{26,28}'
         AND rec."ExamTime" IS NULL
         AND COALESCE(array_position(rec.working_days, rec."AppointmentDT"), 3) > 2 -- превышение сроков записи на МСЭ больше 2 дней
-      THEN 'Нарушение сроков предварительной записи на МСЭ паллиатива или ампутации'
+      THEN 'Ошибка! Дата предварительной записи на МСЭ паллиатива или ампутации превышает 2 рабочих дня'
       WHEN rec.stage_id NOT IN (-1, 1) 
         AND rec."AppointmentDT" IS NOT NULL
         AND rec."ExamTime" IS NULL
