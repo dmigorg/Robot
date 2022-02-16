@@ -109,11 +109,11 @@ WITH par AS (
         AND rec.exam_special_notes && '{26,28}'
         AND rec."DocsIssued" = FALSE
         AND COALESCE(array_position(rec.working_days, rec."DecisionDate"), 4) > 3 -- превышение сроков проведения на МСЭ больше 3 дней
-      THEN 'Ошибка! Срок окончания экспертизы по паллиативу или ампутации превышает 3 рабочих дня'    
+      THEN 'Предупреждение! Срок окончания экспертизы по паллиативу или ампутации превышает 3 рабочих дня'    
        WHEN rec."DecisionDate" IS NOT NULL
         AND rec."DocsIssued" = FALSE 
         AND COALESCE(array_position(rec.working_days, rec."DecisionDate"), 8) > 7 -- превышение сроков проведения на МСЭ больше 7 дней
-      THEN 'Ошибка! Срок окончания экспертизы превышает 7 рабочих дней'    
+      THEN 'Предупреждение! Срок окончания экспертизы превышает 7 рабочих дней'    
       ELSE ''
     END AS message,
     'Бюро №' || rec.orgname AS orgname,
