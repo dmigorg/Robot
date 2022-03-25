@@ -15,6 +15,6 @@ LEFT JOIN LATERAL (
   LIMIT 1
 ) files ON (TRUE)
 WHERE (exam."StateId" = 2 AND exam."DocsIssued" = TRUE)
-  AND concl."DecisionDate" BETWEEN current_date - INTERVAL ''1 days'' AND current_date + INTERVAL ''1 day''
+  AND concl."DecisionDate" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
   AND files."CertThumbprint" IS NULL
 GROUP BY exam."Id", org."SHORTNAME", concl."DecisionDate", p."SNILS"
