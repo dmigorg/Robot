@@ -9,7 +9,7 @@ LEFT JOIN LATERAL (
     FROM "ExaminationExpDoc" expdoc
     WHERE expdoc."ExaminationId" = exam."Id" 
 ) AS expdoc(id) ON TRUE
-WHERE (exam."StateId" = 2 AND exam."DocsIssued" = TRUE)
+WHERE exam."StateId" = 2
     AND concl."DecisionDate" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
     AND expdoc.id && '{5, 7, 38, 39, 45, 46, 40, 41}'
     AND NOT(expdoc.id && '{8}')
