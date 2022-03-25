@@ -57,3 +57,4 @@ ipra = 0 8-15 * * 1-5
 examksi = 0 8-15/5 * * 1-5
 directionksi = 0 8-15 * * 1-5
 signmissing = 0 8-15 * * 1-5
+copycertmissing = 0 8-15 * * 1-5
