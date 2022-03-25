@@ -1,11 +1,11 @@
 SELECT --exam."Id",
- org."SHORTNAME", p."SNILS", to_char(concl."DecisionDate",'dd.mm.yyyy') AS "DecisionDate", COUNT(1) AS cnt
+ org."SHORTNAME", p."SNILS", to_char(concl."DecisionDate",'dd.mm.yyyy') AS "DecisionDate"
 FROM "Examination" exam
 JOIN "Person" p ON p."PersonID" = exam."PatientPersonId"
 JOIN "DicOrganization" org ON org."ORGANIZATION_ID" = exam."ExamBuroId" 
 JOIN "ExaminationConclusion" concl ON concl."ExaminationId" = exam."Id" 
 LEFT JOIN LATERAL (
-  SELECT files."CertThumbprint", doc."ExpDocTypeId" 
+  SELECT files."CertThumbprint"
   FROM "ExaminationExpDoc" doc
   JOIN "ExaminationExpDocFiles" eedf ON eedf."ExaminationExpDocId" = doc."Id" 
   JOIN "FileStorage" files ON files."FileID" = eedf."FileStorageFileID" 
