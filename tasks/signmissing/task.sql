@@ -1,5 +1,5 @@
 SELECT --exam."Id",
- org."SHORTNAME", to_char(concl."DecisionDate",'dd.mm.yyyy') AS "DecisionDate", p."SNILS", COUNT(1) AS cnt
+ org."SHORTNAME", p."SNILS", to_char(concl."DecisionDate",'dd.mm.yyyy') AS "DecisionDate", COUNT(1) AS cnt
 FROM "Examination" exam
 JOIN "Person" p ON p."PersonID" = exam."PatientPersonId"
 JOIN "DicOrganization" org ON org."ORGANIZATION_ID" = exam."ExamBuroId" 
