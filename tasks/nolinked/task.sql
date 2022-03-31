@@ -35,6 +35,8 @@ WHERE req."RequestTypeID" IN(4, 5)
   AND relations.val IS NULL
   -- нет в журнале ТФОМС
   AND tfoms."Id" IS NULL
+  -- нет документа о возврате направления в мед. организацию
+  AND req."DirectionReturnRemdDocId" IS NULL
   -- нет даты смерти
   AND NOT EXISTS (
     SELECT 1 FROM "Person" p2
