@@ -35,5 +35,10 @@ WHERE req."RequestTypeID" IN(4, 5)
   AND relations.val IS NULL
   -- нет в журнале ТФОМС
   AND tfoms."Id" IS NULL
+  -- нет даты смерти
+  AND NOT EXISTS (
+    SELECT 1 FROM "Person" p2
+    WHERE p2."PersonID" = p."RegistryPersonId" AND p2."DeathDate" IS NOT NULL
+  )
   AND doc."CreateTime" > '20211201'
   ORDER BY org."Number", doc."CreateTime"
