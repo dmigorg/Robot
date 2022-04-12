@@ -14,10 +14,17 @@ class Helper
   {
     $path = TASK_PATH."/$task"; 
     $ini = parse_ini_file("$path/task.ini");
+    
+    $sender = null;
+    if(file_exists("$path/custom.ini")){
+      $customini = parse_ini_file("$path/custom.ini");
+      $sender = $customini['sender'] ?? null;
+    }
+
     return [
       $ini['description'],
       $ini['header'],
-      $ini['sender'] ?? null
+      $sender
     ];
   }
 
