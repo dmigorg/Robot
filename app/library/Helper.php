@@ -16,7 +16,8 @@ class Helper
     $ini = parse_ini_file("$path/task.ini");
     return [
       $ini['description'],
-      $ini['header']
+      $ini['header'],
+      $ini['sender'] ?? null
     ];
   }
 

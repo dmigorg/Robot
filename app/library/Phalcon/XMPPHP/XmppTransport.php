@@ -49,6 +49,12 @@ class XmppTransport
         return $this;
     }
 
+    public function sender($to)
+    {
+        $this->sender = $to;
+        return $this;
+    }
+
     public function send()
     {
         if(!empty($this->content)){

@@ -10,8 +10,9 @@ class GodTask extends \Phalcon\Cli\Task
 {
     public function mainAction(string $task)
     {
-        list($subject, $header, $sql) = $this->getParams($task);
+        list($subject, $header, $sender ,$sql) = $this->getParams($task);
         $message = $this->transport->createMessage();
+        if(!empty($sender)) $message->sender($sender);
         $message->header($header);
         $message->subject($subject);
         $message->content($this->compute($sql));
@@ -30,11 +31,12 @@ class GodTask extends \Phalcon\Cli\Task
 
     private function getParams(string $task) : array
     {
-        list($description, $header) = Helper::getIniTask($task);
+        list($description, $header, $sender) = Helper::getIniTask($task);
         $sql = Helper::getSqlTask($task);
         return [
             $description,
             $header,
+            $sender,
             $sql
         ];
     }
