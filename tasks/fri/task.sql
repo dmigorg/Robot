@@ -10,9 +10,10 @@ LEFT JOIN LATERAL (
 ) AS expdoc(val) ON TRUE 
 WHERE (sev."ExamPassedToFriState" = FALSE OR sev."ExamPassedToFriState" IS NULL)
 AND sev."MetaStateId" = 4
-AND sev."DecisionDate" BETWEEN current_date - '1 month'::INTERVAL AND current_date - '27 hour'::INTERVAL 
+AND sev."DecisionDate" BETWEEN current_date - '1 week'::INTERVAL AND current_date - '27 hour'::INTERVAL 
 AND (expdoc.val && '{528, 529}'
     OR expdoc.val && '{5, 38, 40, 45}'
+    OR  (expdoc.val && '{3}' AND sev."PrevExamInvalidityGroupId" IN (1,2,3))
 )
 -- только свой узел
 AND sev."ExamBuroId" IN (
