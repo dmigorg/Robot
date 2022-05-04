@@ -9,17 +9,8 @@ class HelpTask extends \Phalcon\Cli\Task
 {
     public function mainAction()
     {
-        $commands = <<<END
-        Доступные команды:
-        robot task - Список запланированных заданий 
-        robot task <Название_Задания> - Запуск задания
-        robot cron - Запуск планировщика заданий
-        robot help - Вывод доступных команд
-        robot version - Версия программы\n\n
-        END;
-
-        echo $commands;
-        echo "Запуск задания:\n";
+        echo $this->locale->_('commands');
+        echo $this->locale->_('help-task-start');
         echo $this->getNameTask();
     }
 

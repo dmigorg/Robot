@@ -12,7 +12,7 @@ class CronTask extends \Phalcon\Cli\Task
         if(!empty($results)){
             echo implode(PHP_EOL, $results);
         } else {
-            echo 'No tasks available';
+            echo $this->locale->_('no-tasks');
         }
     }
 }

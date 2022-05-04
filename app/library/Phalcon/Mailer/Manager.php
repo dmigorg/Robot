@@ -124,7 +124,7 @@ class Manager extends Injectable implements EventsAwareInterface
         }
 
         if (($to = $this->getConfig('to'))) {
-            $message->to($to['email'], isset($to['name']) ? $to['name'] : null);
+            $message->recipient($to['email'], isset($to['name']) ? $to['name'] : null);
         }
 
         if (($bcc = $this->getConfig('bcc'))) {

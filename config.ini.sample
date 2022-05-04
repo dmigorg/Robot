@@ -1,4 +1,6 @@
 [app]
+; Выбор языка для вывода сообщений
+language = en
 ; xmpp или mail, для выбора типа транспорта
 transport = xmpp
 
@@ -21,7 +23,7 @@ password = password
 ; название ресурса
 resource = robot
 ; имя получателя
-sender   = username@host
+recipient= username@host
 
 [mail]
 ; имя протокола
@@ -43,7 +45,7 @@ from[email] = username@yandex.com
 ; имя отправителя
 from[name]  = EAVIIAS Robot
 ; имя получателя
-to[email]   = to@yandex.com
+recipient   = to@yandex.com
 ; имя получателя скрытой копии
 ;bcc[email]   = hide@gmail.com
 
@@ -59,3 +61,4 @@ directionksi = 0 8-15 * * 1-5
 signmissing = 0 8-15 * * 1-5
 copycertmissing = 0 8-15 * * 1-5
 nolinked = 0 8-15 * * 1-5
+remderror = 0 8-15 * * 1-5

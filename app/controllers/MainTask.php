@@ -14,19 +14,19 @@ class MainTask extends \Phalcon\Cli\Task
                 $args = $this->task['arg'];
                 
                 if(empty($args)) {
-                    echo 'Список запланированных заданий:'.str_repeat(PHP_EOL, 2);
+                    echo $this->locale->_('list-task-plannig').str_repeat(PHP_EOL, 2);
                     foreach($this->config->task as $task=>$time) {
                         list($description) = Helper::getIniTask($task);
                         echo "robot task $task - $description".PHP_EOL;
                         echo " $time".str_repeat(PHP_EOL, 2);
                     }
-                    echo 'robot task <Название_Задания> - Запуск задания';
+                    echo $this->locale->_('help-task-name');
                     break;
                 } 
                 
                 if(!in_array($args, Helper::tasksName())) {
-                    echo 'Task name is wrong'.PHP_EOL;
-                    echo 'robot help - Вывод доступных команд';
+                    echo $this->locale->_('task-wrong').PHP_EOL;
+                    echo $this->locale->_('help');
                     break;
                 }
 

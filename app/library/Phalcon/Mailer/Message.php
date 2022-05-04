@@ -149,7 +149,7 @@ class Message
      *
      * @see \Swift_Message::setTo()
      */
-    public function to($email, $name = null)
+    public function recipient($email, $name = null)
     {
         $email = $this->normalizeEmail($email);
         $this->getSwiftMessage()->setTo($email, $name);

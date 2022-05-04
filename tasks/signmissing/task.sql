@@ -25,6 +25,13 @@ LEFT JOIN LATERAL (
   LIMIT 1
 ) AS protocol(num) ON TRUE
 WHERE (exam."StateId" = 2 AND exam."DocsIssued" = TRUE)
+  -- Только свой узел
+  AND exam."ExamBuroId" = ANY(
+    SELECT o."ORGANIZATION_ID"
+    FROM "DicOrganization" o
+    WHERE o."PARENT_ORGANIZATION_ID" = (SELECT s."SettingValue"::int 
+      FROM "ApplicationSettings" s WHERE s."SettingName" = 'CurrentOrganizationID'
+  ))
   AND concl."DecisionDate" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
   AND files."CertThumbprint" IS NULL
 GROUP BY exam."Id", org."SHORTNAME", concl."DecisionDate", p."SNILS", COALESCE(protocol.num, 'n/a')

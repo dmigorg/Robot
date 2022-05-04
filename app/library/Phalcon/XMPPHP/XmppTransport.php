@@ -9,7 +9,7 @@ class XmppTransport
     protected $username;
     protected $password;
     protected $resource;
-    protected $sender;
+    protected $recipient;
     protected $content;
     protected $subject;
     protected $header;
@@ -32,7 +32,6 @@ class XmppTransport
         $this->username = $config['username'];
         $this->password = $config['password'];
         $this->resource = $config['resource'] ?? 'robot';
-        $this->sender = $config['sender'];
     }
 
     public function createMessage()
@@ -49,16 +48,16 @@ class XmppTransport
         return $this;
     }
 
-    public function sender($to)
+    public function recipient($to)
     {
-        $this->sender = $to;
+        $this->recipient = $to;
         return $this;
     }
 
     public function send()
     {
         if(!empty($this->content)){
-            $this->conn->message($this->sender, $this->content, 'chat', $this->subject);
+            $this->conn->message($this->recipient, $this->content, 'chat', $this->subject);
             return true;
         }
         

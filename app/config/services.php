@@ -41,8 +41,7 @@ $container->setShared(
                     'port'       => $config->xmpp->port,
                     'username'   => $config->xmpp->username,
                     'password'   => $config->xmpp->password,
-                    'resource'   => $config->xmpp->resource,
-                    'sender'     => $config->xmpp->sender
+                    'resource'   => $config->xmpp->resource
                     ]
                 );
             // Transport Mail
@@ -61,9 +60,6 @@ $container->setShared(
                         'from'       => [
                             'email'  => $config->mail->from['email'],
                             'name'   => $config->mail->from['name'],
-                        ],
-                        'to'       => [
-                            'email'  => $config->mail->to['email']
                         ],
                         'bcc'       => [
                             'email'  => $config->mail->bcc['email'] ?? null
@@ -91,3 +87,5 @@ $container->set(
         return $cron;
     }
 );
+
+$container->set('locale', (new \Robot\Config\Locale())->getTranslator());

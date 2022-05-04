@@ -18,15 +18,17 @@ $dispatcher = new Dispatcher();
 
 $dispatcher->setDefaultNamespace('Robot\Controllers');
 $container->setShared('dispatcher', $dispatcher);
-/**
- * Include Services
- */
-include APP_PATH . '/config/services.php';
 
 /**
  * Include Autoloader
  */
 include APP_PATH . '/config/loader.php';
+
+/**
+ * Include Services
+ */
+include APP_PATH . '/config/services.php';
+
 
 /**
  * Create a console application
