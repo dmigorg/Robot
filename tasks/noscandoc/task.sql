@@ -52,3 +52,4 @@ WHERE
     WHERE eed."ExpDocTypeId"= 15 AND eed."ExaminationId" = exam."Id" AND eedf."FileStorageFileID" IS NULL
   )
   AND exam."UpdatedTime" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
+ORDER BY org."ORGANIZATION_TYPE_ID", org."Number"
