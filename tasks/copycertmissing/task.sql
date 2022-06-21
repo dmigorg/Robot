@@ -34,3 +34,4 @@ WHERE exam."StateId" = 2
     WHERE eed."ExpDocTypeId"= 8 AND eed."ExaminationId" = exam."Id"
     )
   )
+ORDER BY org."Number", concl."DecisionDate"
