@@ -23,12 +23,14 @@ WHERE exam."StateId" = 2
   AND concl."DecisionDate" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
   -- есть выписка/справка
   AND expdoc.id && '{5, 7, 38, 39, 45, 46, 40, 41}'
-  -- нет сканированной копии справки
-  AND NOT (expdoc.id && '{8}')
-  -- нет прикрепленной скан-копии
-  AND NOT EXISTS (
+  AND (
+    -- нет сканированной копии справки
+    NOT(expdoc.id && '{8}')
+    -- нет прикрепленной скан-копии
+    OR NOT EXISTS (
     SELECT 1 
     FROM "ExaminationExpDoc" eed 
     JOIN "ExaminationExpDocFiles" eedf ON eedf."ExaminationExpDocId" = eed."Id" 
     WHERE eed."ExpDocTypeId"= 8 AND eed."ExaminationId" = exam."Id"
+    )
   )
