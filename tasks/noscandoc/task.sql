@@ -1,7 +1,7 @@
 SELECT
   org."SHORTNAME", p."SNILS",
   COALESCE(protocol.num, 'n/a') AS protocol,
-  to_char(exam."UpdatedTime",'dd.mm.yyyy') AS "UpdatedTime"
+  to_char(exam."ExamTime",'dd.mm.yyyy') AS "ExamTime"
 FROM "Examination" exam
 JOIN "ExaminationConclusion" concl ON concl."ExaminationId"  = exam."Id"
 JOIN "ExaminationPointsOfOrderMse" AS points ON exam."Id" = points."ExaminationID"
@@ -51,5 +51,5 @@ WHERE
     LEFT JOIN "ExaminationExpDocFiles" eedf ON eedf."ExaminationExpDocId" = eed."Id" 
     WHERE eed."ExpDocTypeId"= 15 AND eed."ExaminationId" = exam."Id" AND eedf."FileStorageFileID" IS NULL
   )
-  AND exam."UpdatedTime" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
+  AND exam."ExamTime" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
 ORDER BY org."ORGANIZATION_TYPE_ID", org."Number"
