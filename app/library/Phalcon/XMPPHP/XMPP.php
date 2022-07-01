@@ -172,7 +172,7 @@ class XMPP extends XMLStream {
 	    }
 
 		$to	  = htmlspecialchars($to);
-		$body	= htmlspecialchars($body);
+		$body	= htmlspecialchars($body)."\r\n";
 		$subject = htmlspecialchars($subject);
 		
 		$out = "<message from=\"{$this->fulljid}\" to=\"$to\" type='$type'>";
