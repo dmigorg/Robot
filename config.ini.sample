@@ -65,3 +65,4 @@ nolinked = 0 8-15 * * 1-5
 remderror = 0 8-15 * * 1-5
 noscandoc = 0 8-15 * * 1-5
 nopresence = 0 8-15 * * 1-5
+15min = 0 8-15 * * 1-5
