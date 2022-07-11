@@ -26,7 +26,7 @@ WITH rec AS (
       LEFT JOIN "ExaminationRecordExamination" er ON er."ExaminationRecordId" = r."Id"
       WHERE er."ExaminationId" = exam."Id" AND r."WasAppeared" = TRUE
     )
-    AND exam."ExamTime" BETWEEN current_date - '1 month'::INTERVAL AND current_timestamp
+    AND exam."ExamTime" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
 )
 SELECT
   "SHORTNAME",
