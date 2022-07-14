@@ -33,7 +33,7 @@ LEFT JOIN LATERAL (
      SELECT "SignUserId" FROM "FileSignature" WHERE eedf."FileStorageFileID" = "FileId"
   ) AS "SignUser"("Id") ON TRUE
   LEFT OUTER JOIN "User" AS u ON "SignUser"."Id" = u."Id"
-  WHERE eed."ExpDocTypeId" = ANY(SELECT 10 + "ID" * 100 FROM "DicExaminationPurpose")
+  WHERE (eed."ExpDocTypeId" = 10 OR eed."ExpDocTypeId" = (10 + g."Id" * 100))
     AND eed."ExaminationId" = exam."Id"
 ) AS "SignUser"("Count") ON TRUE 
 WHERE (exam."StateId" = 2 AND exam."DocsIssued" = TRUE) AND concl."DecisionDate"::date = current_date
