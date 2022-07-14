@@ -52,7 +52,7 @@ WITH rec AS (
       WHEN "RecordExist" AND NOT(pn."NoticeTypeIds" && '{4}') THEN 'Отсутствует "Уведомление о проведении МСЭ (Приглашение)"'
       WHEN "RecordExist" AND NOT(pn."NoticeTypeIds" && '{5}') THEN 'Отсутствует "Уведомление о проведении МСЭ (Уведомление о дате и времени проведения МСЭ)"'
       WHEN "PdoExist" AND NOT(pn."NoticeTypeIds" && '{6}') THEN 'Отсутствует "Уведомление о ПДО (Назначение ПДО)"'
-      WHEN "PdoExist" AND NOT(pn."NoticeTypeIds" && '{7}') THEN 'Отсутствует "Уведомление о ПДО (Ответ о назначении ПДО)"'
+      --WHEN "PdoExist" AND NOT(pn."NoticeTypeIds" && '{7}') THEN 'Отсутствует "Уведомление о ПДО (Ответ о назначении ПДО)"'
     ELSE NULL
     END AS message,
     "SHORTNAME",
