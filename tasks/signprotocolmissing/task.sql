@@ -36,7 +36,7 @@ LEFT JOIN LATERAL (
   WHERE (eed."ExpDocTypeId" = 10 OR eed."ExpDocTypeId" = (10 + g."Id" * 100))
     AND eed."ExaminationId" = exam."Id"
 ) AS "SignUser"("Count") ON TRUE 
-WHERE (exam."StateId" = 2 AND exam."DocsIssued" = TRUE) AND concl."DecisionDate"::date = current_date
+WHERE (exam."StateId" = 2 AND exam."DocsIssued" = TRUE)
     -- Только свой узел
   AND exam."ExamBuroId" = ANY(
     SELECT o."ORGANIZATION_ID"
@@ -45,3 +45,4 @@ WHERE (exam."StateId" = 2 AND exam."DocsIssued" = TRUE) AND concl."DecisionDate"
       FROM "ApplicationSettings" s WHERE s."SettingName" = 'CurrentOrganizationID'
   ))
   AND "User"."Count" != "SignUser"."Count"
+  AND concl."DecisionDate" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
