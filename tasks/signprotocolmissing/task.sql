@@ -17,25 +17,41 @@ LEFT JOIN LATERAL (
   LIMIT 1
 ) AS protocol(num) ON TRUE
 LEFT JOIN LATERAL (
-  SELECT COUNT(1)
-  FROM "ExaminationSpecialistData" esd
-  JOIN "RDSpecialist" rs ON rs."Id" = esd."SpecialistId"
-  WHERE esd."ExaminationId" = exam."Id"
+  SELECT count(1)
+  FROM (
+    SELECT 1
+    FROM (
+      SELECT rs."LastName", rs."FirstName", rs."SecondName" 
+      FROM "ExaminationSpecialistData" esd
+      JOIN "RDSpecialist" rs ON rs."Id" = esd."SpecialistId" 
+      WHERE esd."ExaminationId" = exam."Id"    
+      UNION ALL
+      SELECT rs."LastName", rs."FirstName", rs."SecondName" 
+      FROM "ExaminationConclusion" ec
+      JOIN "RDSpecialist" rs ON rs."Id" = ec."BuroManagerId" 
+      WHERE ec."ExaminationId" = exam."Id"
+    ) t
+    GROUP BY t."LastName", t."FirstName", t."SecondName"
+  ) t
 ) AS "User"("Count") ON TRUE 
 LEFT JOIN LATERAL (
-    SELECT COUNT(1)
-    -- u."LastName", u."Name", u."SecondName" 
-  FROM "ExaminationExpDocFiles" AS eedf
-  JOIN "ExaminationExpDoc" eed ON eed."Id" = eedf."ExaminationExpDocId" 
-  LEFT JOIN LATERAL (
-    SELECT "SignUserId" FROM "FileStorage" WHERE eedf."FileStorageFileID" = "FileID"  
-    UNION ALL
-     SELECT "SignUserId" FROM "FileSignature" WHERE eedf."FileStorageFileID" = "FileId"
-  ) AS "SignUser"("Id") ON TRUE
-  LEFT OUTER JOIN "User" AS u ON "SignUser"."Id" = u."Id"
-  WHERE (eed."ExpDocTypeId" = 10 OR eed."ExpDocTypeId" = (10 + g."Id" * 100))
-    AND eed."ExaminationId" = exam."Id"
-) AS "SignUser"("Count") ON TRUE 
+  SELECT COUNT(1)
+  FROM (
+    SELECT 1
+      -- u."LastName", u."Name", u."SecondName" 
+    FROM "ExaminationExpDoc" eed
+    JOIN "ExaminationExpDocFiles" AS eedf ON eed."Id" = eedf."ExaminationExpDocId"
+    LEFT JOIN LATERAL (
+      SELECT "SignUserId", "CreateTime" FROM "FileStorage" WHERE eedf."FileStorageFileID" = "FileID"  
+      UNION ALL
+       SELECT "SignUserId", "CreateTime" FROM "FileSignature" WHERE eedf."FileStorageFileID" = "FileId"
+    ) AS "SignUser"("Id", "CreateTime") ON TRUE
+    JOIN "User" AS u ON "SignUser"."Id" = u."Id"
+    WHERE (eed."ExpDocTypeId" = 10 OR eed."ExpDocTypeId" = (10 + g."Id" * 100))
+      AND eed."ExaminationId" = exam."Id"
+    GROUP BY u."LastName", u."Name", u."SecondName"
+  ) t
+) AS "SignUser"("Count") ON TRUE
 WHERE (exam."StateId" = 2 AND exam."DocsIssued" = TRUE)
     -- Только свой узел
   AND exam."ExamBuroId" = ANY(
