@@ -11,8 +11,9 @@ LEFT JOIN LATERAL (
   FROM "ExaminationExpDoc" doc
   JOIN "ExaminationExpDocFiles" eedf ON eedf."ExaminationExpDocId" = doc."Id" 
   JOIN "FileStorage" files ON files."FileID" = eedf."FileStorageFileID" 
-  WHERE doc."ExaminationId" = exam."Id" 
-    AND "ExpDocTypeId" NOT IN (8, 15)
+  WHERE doc."ExaminationId" = exam."Id"
+    -- 8 - скан справки МСЭ; 15 - документы-основание; 30 - Лист информирования гражданина
+    AND "ExpDocTypeId" NOT IN (8, 15, 30)
   ORDER BY files."UploadTime" DESC
   LIMIT 1
 ) files ON (TRUE)
