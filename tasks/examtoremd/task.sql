@@ -26,5 +26,5 @@ LEFT JOIN LATERAL (
 WHERE "BackTicketLpuSemdCreateTime" IS NOT NULL
   AND "BackTicketLpuSemdCreateTime" < current_timestamp - interval '24 hours'
   AND "BackTicketLpuExportRemdTime" IS NULL
-  AND concl."DecisionDate" > current_timestamp - interval '7 days'
+  AND concl."DecisionDate" > current_timestamp - interval '3 days'
 ORDER BY org."Number", concl."DecisionDate"
