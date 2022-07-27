@@ -4,7 +4,8 @@ SELECT
     (SELECT doc."Number"
       FROM "ExaminationExpDoc" doc
       WHERE doc."ExaminationId" = exam."Id" AND (doc."ExpDocTypeId" = 10 OR doc."ExpDocTypeId" = (10 + g."Id" * 100))
-    LIMIT 1) AS "ProtocolNumber"
+    LIMIT 1) AS "ProtocolNumber",
+    to_char(concl."DecisionDate", 'dd.mm.yyyy') AS "DecisionDate"
 FROM "Examination" exam
 JOIN "Person" p ON p."PersonID" = exam."PatientPersonId"
 JOIN "ExaminationConclusion" concl ON concl."ExaminationId" = exam."Id"
