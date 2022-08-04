@@ -49,7 +49,7 @@ set_exception_handler(function($exception) use ($container) {
     $logger->error($exception->getMessage());
     $logger->debug($exception->getFile() . ':' . $exception->getLine());
     $logger->debug("StackTrace:\r\n" . $exception->getTraceAsString() . "\r\n");
-
+    echo 'App terminates with the error';
     exit(255);
 });
 
