@@ -4,9 +4,11 @@ declare(strict_types=1);
 /**
  * Shared configuration service
  */
-$container->setShared('config', function () {
-    return new Phalcon\Config\Adapter\Ini(BASE_PATH . '/config.ini');
-});
+$container->setShared('config',
+    function () {
+        return new Phalcon\Config\Adapter\Ini(BASE_PATH . '/config.ini');
+    }
+);
 
 /**
  * Get config service for use in inline setup below
@@ -18,19 +20,18 @@ $config = $container->getConfig();
  */
 $container->setShared('db', 
     function () use($config) {
-    $params = [
-        'host'     => $config->db->host,
-        'username' => $config->db->username,
-        'password' => $config->db->password,
-        'dbname'   => $config->db->dbname,
-        'port'  => $config->db->port
-    ];
+        $params = [
+            'host'     => $config->db->host,
+            'username' => $config->db->username,
+            'password' => $config->db->password,
+            'dbname'   => $config->db->dbname,
+            'port'  => $config->db->port
+        ];
 
-    return new Phalcon\Db\Adapter\Pdo\Postgresql($params);
+        return new Phalcon\Db\Adapter\Pdo\Postgresql($params);
 });
 
-$container->setShared(
-    'transport',
+$container->setShared('transport',
     function () use($config){
         switch ($config->app->transport) {
             // Transport XMPP
@@ -70,8 +71,30 @@ $container->setShared(
     }
 );
 
-$container->set(
-    'cron',
+/**
+ * Logger is created based in the parameters defined in the configuration file
+ */
+$container->setShared('logger', 
+    function () use($config) {
+        $filename = BASE_PATH. ($config->logger->filename ?? '/logs/main.log');
+        $adapter = new Phalcon\Logger\Adapter\Stream($filename);
+        $logger  = new Phalcon\Logger(
+            'messages',
+            [
+                'main' => $adapter,
+            ]
+        );
+        
+        $logger->setLogLevel($config->logger->level ?? Phalcon\Logger::INFO);
+
+        return $logger;
+    }
+);
+
+/**
+ * Cron is created based in the parameters defined in the configuration file
+ */
+$container->setShared('cron',
     function () use($config){
         $cron = new Sid\Phalcon\Cron\Manager();
 
@@ -79,7 +102,7 @@ $container->set(
         {
             $cron->add(
                 new Sid\Phalcon\Cron\Job\Phalcon(
-                    $time, ['task' => 'god', 'params' => [$task]]
+                    $time, ['task' => 'father', 'params' => [$task]]
                 )
             );
         }
@@ -88,4 +111,7 @@ $container->set(
     }
 );
 
+/**
+ * Locale is created based in the parameters defined in the configuration file
+ */
 $container->set('locale', (new \Robot\Config\Locale())->getTranslator());

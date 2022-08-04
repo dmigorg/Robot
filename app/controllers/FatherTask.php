@@ -7,7 +7,7 @@ use Phalcon\Db\Enum;
 use Robot\Library\Helper;
 use Robot\Models\Params;
 
-class GodTask extends \Phalcon\Cli\Task
+class FatherTask extends \Phalcon\Cli\Task
 {
     public function mainAction(string $task)
     {

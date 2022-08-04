@@ -4,6 +4,19 @@ language = en
 ; xmpp или mail, для выбора типа транспорта
 transport = xmpp
 
+[logger]
+filename = /logs/main.log
+;EMERGENCY	0
+;CRITICAL	1
+;ALERT	2
+;ERROR	3
+;WARNING	4
+;NOTICE	5
+;INFO	6
+;DEBUG	7
+;CUSTOM	8
+level = 3
+
 [db]
 host     = localhost
 dbname   = DBname

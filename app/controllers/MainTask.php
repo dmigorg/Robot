@@ -30,7 +30,7 @@ class MainTask extends \Phalcon\Cli\Task
                     break;
                 }
 
-                $this->console->handle(['task' => 'god', 'params' => [$args]]);
+                $this->console->handle(['task' => 'father', 'params' => [$args]]);
                 break;
 
             case 'cron':

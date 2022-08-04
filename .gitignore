@@ -1,6 +1,7 @@
 config.ini
 custom.ini
 custom.sql
+**/*.log
 composer.*
 .vs/
 vendor/

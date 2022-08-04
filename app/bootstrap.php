@@ -43,15 +43,18 @@ $container->set('task', function() use($argv) {
         return ['name' => $argv[1] ?? 'help', 'arg' => $argv[2] ?? '' ];
     });
 
-try {
-    /**
-     * Handle
-     */
-    $console->handle();
-} 
-catch (Exception $e) {
-    echo $e->getMessage() . PHP_EOL;
-    echo $e->getTraceAsString() . PHP_EOL;
-    echo get_class($e);
+set_exception_handler(function($exception) use ($container) {
+    // Log unhandled exception as an error
+    $logger = $container->get('logger');
+    $logger->error($exception->getMessage());
+    $logger->debug($exception->getFile() . ':' . $exception->getLine());
+    $logger->debug("StackTrace:\r\n" . $exception->getTraceAsString() . "\r\n");
+
     exit(255);
-}
+});
+
+/**
+ * Handle
+*/
+$console->handle();
+
