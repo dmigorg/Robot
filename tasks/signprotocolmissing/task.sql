@@ -1,9 +1,11 @@
-SELECT --exam."Id",
+SELECT --exam."Id"
   org."SHORTNAME" AS "SHORTNAME", 
   COALESCE(p."SNILS",'нет') AS "SNILS",
   COALESCE(protocol.num, 'n/a') AS num,
   to_char(concl."DecisionDate",'dd.mm.yyyy') AS "DecisionDate",
-  "User"."Count" - "SignUser"."Count" AS miss_sign
+  "User"."Count" - "SignUser"."Count" AS miss_sign,
+  "User"."Count",
+  "SignUser"."Count"
 FROM "Examination" exam
 JOIN "Person" p ON p."PersonID" = exam."PatientPersonId"
 JOIN "ExaminationConclusion" concl ON concl."ExaminationId" = exam."Id"
@@ -38,22 +40,27 @@ LEFT JOIN LATERAL (
     ) t
     GROUP BY t."LastName", t."FirstName", t."SecondName"
   ) t
-) AS "User"("Count") ON TRUE 
+) AS "User"("Count") ON true
+LEFT JOIN LATERAL (
+  SELECT file."FileID"
+  FROM "ExaminationExpDoc" eed
+  JOIN "ExaminationExpDocFiles" AS eedf ON eed."Id" = eedf."ExaminationExpDocId"
+  JOIN "FileStorage" AS file ON file."FileID" = eedf."FileStorageFileID"
+  WHERE (eed."ExpDocTypeId" = 10 OR eed."ExpDocTypeId" = (10 + g."Id" * 100)) AND eed."ExaminationId" = exam."Id"
+  ORDER BY file."UploadTime" desc
+  LIMIT 1
+) AS "File"("Id") ON TRUE
 LEFT JOIN LATERAL (
   SELECT COUNT(1)
   FROM (
     SELECT 1
-      -- u."LastName", u."Name", u."SecondName" 
-    FROM "ExaminationExpDoc" eed
-    JOIN "ExaminationExpDocFiles" AS eedf ON eed."Id" = eedf."ExaminationExpDocId"
-    LEFT JOIN LATERAL (
-      SELECT "SignUserId", "CreateTime" FROM "FileStorage" WHERE eedf."FileStorageFileID" = "FileID"  
+    FROM "User" u
+    LEFT JOIN lateral (
+      SELECT "SignUserId" FROM "FileStorage" WHERE "FileID" = "File"."Id"
       UNION ALL
-       SELECT "SignUserId", "CreateTime" FROM "FileSignature" WHERE eedf."FileStorageFileID" = "FileId"
-    ) AS "SignUser"("Id", "CreateTime") ON TRUE
-    JOIN "User" AS u ON "SignUser"."Id" = u."Id"
-    WHERE (eed."ExpDocTypeId" = 10 OR eed."ExpDocTypeId" = (10 + g."Id" * 100))
-      AND eed."ExaminationId" = exam."Id"
+       SELECT "SignUserId" FROM "FileSignature" WHERE "FileId" = "File"."Id"
+    ) AS "SignUser"("Id") ON TRUE
+    WHERE "SignUser"."Id" = u."Id"
     GROUP BY u."LastName", u."Name", u."SecondName"
   ) t
 ) AS "SignUser"("Count") ON TRUE
@@ -67,3 +74,4 @@ WHERE (exam."StateId" = 2 AND exam."DocsIssued" = TRUE)
   )
   AND "User"."Count" != "SignUser"."Count"
   AND concl."DecisionDate" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
+  
