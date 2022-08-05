@@ -30,6 +30,11 @@ LEFT JOIN LATERAL (
       FROM "ExaminationConclusion" ec
       JOIN "RDSpecialist" rs ON rs."Id" = ec."BuroManagerId" 
       WHERE ec."ExaminationId" = exam."Id"
+      UNION ALL
+      SELECT rs."LastName", rs."FirstName", rs."SecondName" 
+      FROM "ExaminationConclusion" ec
+      JOIN "RDSpecialist" rs ON rs."Id" = ec."ExpSostavManagerId" 
+      WHERE ec."ExaminationId" = exam."Id"
     ) t
     GROUP BY t."LastName", t."FirstName", t."SecondName"
   ) t
@@ -54,11 +59,11 @@ LEFT JOIN LATERAL (
 ) AS "SignUser"("Count") ON TRUE
 WHERE (exam."StateId" = 2 AND exam."DocsIssued" = TRUE)
     -- Только свой узел
-  AND exam."ExamBuroId" = ANY(
+  AND exam."ExamBuroId" = ANY (
     SELECT o."ORGANIZATION_ID"
     FROM "DicOrganization" o
     WHERE o."PARENT_ORGANIZATION_ID" = (SELECT s."SettingValue"::int 
-      FROM "ApplicationSettings" s WHERE s."SettingName" = 'CurrentOrganizationID'
-  ))
+      FROM "ApplicationSettings" s WHERE s."SettingName" = 'CurrentOrganizationID')
+  )
   AND "User"."Count" != "SignUser"."Count"
   AND concl."DecisionDate" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
