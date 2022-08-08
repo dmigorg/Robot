@@ -50,8 +50,8 @@ WITH rec AS (
       WHEN "IsReturn" AND NOT(pn."NoticeTypeIds" && '{2}') THEN 'Отсутствует "Уведомление о причинах возврата направления"'
       WHEN "IsRequest" = FALSE AND NOT(pn."NoticeTypeIds" && '{1}') THEN 'Отсутствует "Уведомление о регистрации направления на МСЭ"'
       WHEN "IsRequest" AND NOT(pn."NoticeTypeIds" && '{3}') THEN 'Отсутствует "Уведомление о регистрации заявления об обжаловании..."'
-      WHEN "RecordExist"  AND ("NullExamRecords" > 0 OR NOT(pn."NoticeTypeIds" && '{4}')) THEN 'Отсутствует "Уведомление о проведении МСЭ (Приглашение)"'
-      WHEN "RecordExist" AND ("NullExamRecords" > 0 OR NOT(pn."NoticeTypeIds" && '{5}')) THEN 'Отсутствует "Уведомление о проведении МСЭ (Уведомление о дате и времени проведения МСЭ)"'
+      WHEN "RecordExist"  AND ("NullExamRecordsType4" > 0 OR NOT(pn."NoticeTypeIds" && '{4}')) THEN 'Отсутствует "Уведомление о проведении МСЭ (Приглашение)"'
+      WHEN "RecordExist" AND ("NullExamRecordsType5" > 0 OR NOT(pn."NoticeTypeIds" && '{5}')) THEN 'Отсутствует "Уведомление о проведении МСЭ (Уведомление о дате и времени проведения МСЭ)"'
       WHEN "PdoExist" AND NOT(pn."NoticeTypeIds" && '{6}') THEN 'Отсутствует "Уведомление о ПДО (Назначение ПДО)"'
       WHEN "IsInPresence" = FALSE AND "PdoExist" AND NOT(pn."NoticeTypeIds" && '{7}') THEN 'Отсутствует "Уведомление о ПДО (Ответ о назначении ПДО)"'
     ELSE NULL
@@ -60,11 +60,13 @@ WITH rec AS (
     "SNILS"
   FROM rec
   LEFT JOIN LATERAL (
-    SELECT array_agg(pn."NoticeTypeId"), SUM(1) FILTER (WHERE pn."NoticeTypeId" IN (4,5) AND pn."ExamRecordSourceId" IS NULL)
+    SELECT array_agg(pn."NoticeTypeId"),
+      SUM(1) FILTER (WHERE pn."NoticeTypeId" = 4 AND pn."ExamRecordSourceId" IS NULL),
+      SUM(1) FILTER (WHERE pn."NoticeTypeId" = 5 AND pn."ExamRecordSourceId" IS NULL)
     FROM "PersonNotice" pn
     JOIN "Person" p2 ON p2."PersonID" = pn."RecipientPersonId"
     WHERE p2."RegistryPersonId" = rec."RegistryPersonId"
-  ) AS pn("NoticeTypeIds", "NullExamRecords") ON TRUE
+  ) AS pn("NoticeTypeIds", "NullExamRecordsType4", "NullExamRecordsType5") ON TRUE
 )
 
 SELECT * FROM msg WHERE message IS NOT NULL
