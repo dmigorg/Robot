@@ -3,9 +3,7 @@ SELECT --exam."Id"
   COALESCE(p."SNILS",'нет') AS "SNILS",
   COALESCE(protocol.num, 'n/a') AS num,
   to_char(concl."DecisionDate",'dd.mm.yyyy') AS "DecisionDate",
-  "User"."Count" - "SignUser"."Count" AS miss_sign,
-  "User"."Count",
-  "SignUser"."Count"
+  "User"."Count" - "SignUser"."Count" AS miss_sign
 FROM "Examination" exam
 JOIN "Person" p ON p."PersonID" = exam."PatientPersonId"
 JOIN "ExaminationConclusion" concl ON concl."ExaminationId" = exam."Id"
