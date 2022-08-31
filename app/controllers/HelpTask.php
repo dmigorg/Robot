@@ -33,6 +33,6 @@ class HelpTask extends \Phalcon\Cli\Task
             $tasks[] = 'robot task ' . $task . ' - ' . $ini['description'];
         }
 
-        return implode(PHP_EOL, $tasks);
+        return implode(PHP_EOL, $tasks) . PHP_EOL;
     }
 }
