@@ -36,6 +36,8 @@ class FatherTask extends \Phalcon\Cli\Task
         // Send message
         if ($message->send()) {
             echo $this->locale->_('success', ['task' => $task]) . PHP_EOL;
+        } else {
+            new \Phalcon\Exception($this->locale->_('unsuccess', ['task' => $task]));
         }
     }
 

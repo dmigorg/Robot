@@ -1,10 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
-/**
- * Shared configuration service
- */
-$container->setShared('config',
+$container->setShared(
+    'config',
     function () {
         return new Phalcon\Config\Adapter\Ini(BASE_PATH . '/config.ini');
     }
@@ -18,8 +17,9 @@ $config = $container->getConfig();
 /**
  * Database connection is created based in the parameters defined in the configuration file
  */
-$container->setShared('db', 
-    function () use($config) {
+$container->setShared(
+    'db',
+    function () use ($config) {
         $params = [
             'host'     => $config->db->host,
             'username' => $config->db->username,
@@ -29,23 +29,25 @@ $container->setShared('db',
         ];
 
         return new Phalcon\Db\Adapter\Pdo\Postgresql($params);
-});
+    }
+);
 
-$container->setShared('transport',
-    function () use($config){
+$container->setShared(
+    'transport',
+    function () use ($config) {
         switch ($config->app->transport) {
-            // Transport XMPP
+                // Transport XMPP
             case 'xmpp':
                 return new \Phalcon\XMPPHP\XmppTransport(
                     [
-                    'host'       => $config->xmpp->host,
-                    'port'       => $config->xmpp->port,
-                    'username'   => $config->xmpp->username,
-                    'password'   => $config->xmpp->password,
-                    'resource'   => $config->xmpp->resource
+                        'host'       => $config->xmpp->host,
+                        'port'       => $config->xmpp->port,
+                        'username'   => $config->xmpp->username,
+                        'password'   => $config->xmpp->password,
+                        'resource'   => $config->xmpp->resource
                     ]
                 );
-            // Transport Mail
+                // Transport Mail
             case 'mail':
                 // Swift autoload
                 include APP_PATH . './library/Swiftmailer/swift_required.php';
@@ -74,9 +76,10 @@ $container->setShared('transport',
 /**
  * Logger is created based in the parameters defined in the configuration file
  */
-$container->setShared('logger', 
-    function () use($config) {
-        $filename = BASE_PATH. ($config->logger->filename ?? '/logs/main.log');
+$container->setShared(
+    'logger',
+    function () use ($config) {
+        $filename = BASE_PATH . ($config->logger->filename ?? '/logs/main.log');
         $adapter = new Phalcon\Logger\Adapter\Stream($filename);
         $logger  = new Phalcon\Logger(
             'messages',
@@ -84,7 +87,7 @@ $container->setShared('logger',
                 'main' => $adapter,
             ]
         );
-        
+
         $logger->setLogLevel($config->logger->level ?? Phalcon\Logger::INFO);
 
         return $logger;
@@ -94,15 +97,16 @@ $container->setShared('logger',
 /**
  * Cron is created based in the parameters defined in the configuration file
  */
-$container->setShared('cron',
-    function () use($config){
+$container->setShared(
+    'cron',
+    function () use ($config) {
         $cron = new Sid\Phalcon\Cron\Manager();
 
-        foreach($config->task->toArray() as $task => $time)
-        {
+        foreach ($config->task->toArray() as $task => $time) {
             $cron->add(
                 new Sid\Phalcon\Cron\Job\Phalcon(
-                    $time, ['task' => 'father', 'params' => [$task]]
+                    $time,
+                    ['task' => 'father', 'params' => [$task]]
                 )
             );
         }

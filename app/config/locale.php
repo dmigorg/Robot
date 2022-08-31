@@ -18,10 +18,10 @@ class Locale extends Injectable
         $language = $this->config->app->language;
         $messages = [];
 
-        $translationFile = APP_PATH. '/messages/' . $language . '.php';
+        $translationFile = APP_PATH . '/messages/' . $language . '.php';
 
         if (true !== file_exists($translationFile)) {
-            $translationFile = APP_PATH. '/messages/en.php';
+            $translationFile = APP_PATH . '/messages/en.php';
         }
 
         require $translationFile;
@@ -37,4 +37,3 @@ class Locale extends Injectable
         );
     }
 }
-

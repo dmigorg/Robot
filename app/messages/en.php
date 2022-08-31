@@ -12,6 +12,7 @@ END;
 $messages = [
     'empty' => '%task% task empty data',
     'success' => '%task% task success send',
+    'unsuccess' => '%task% task unsuccess send',
     'no-tasks' => 'No tasks available',
     'task-wrong' => 'Task name is wrong',
     'help' => 'robot help - Output of available commands',
