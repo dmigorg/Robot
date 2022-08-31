@@ -6,13 +6,6 @@ use Phalcon\Cli\Console;
 use Phalcon\Cli\Dispatcher;
 use Phalcon\Di\FactoryDefault\Cli as CliDi;
 
-const BASE_PATH = dirname(__DIR__);
-const APP_PATH = BASE_PATH . '/app';
-const TASK_PATH = BASE_PATH . '/tasks';
-/**
- * The FactoryDefault Dependency Injector automatically registers the services that
- * provide a full stack framework. These default services can be overidden with custom ones.
- */
 $container = new CliDi();
 $dispatcher = new Dispatcher();
 
