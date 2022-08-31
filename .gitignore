@@ -4,4 +4,5 @@ custom.sql
 **/*.log
 composer.*
 .vs/
+.vscode/
 vendor/
