@@ -43,6 +43,16 @@ $container->set('task', function () use ($argv) {
     return ['name' => $argv[1] ?? 'help', 'arg' => $argv[2] ?? ''];
 });
 
+set_exception_handler(function ($exception) use ($container) {
+    // Log unhandled exception as an error
+    $logger = $container->get('logger');
+    $logger->error($exception->getMessage());
+    $logger->debug($exception->getFile() . ':' . $exception->getLine());
+    $logger->debug("StackTrace:\r\n" . $exception->getTraceAsString() . "\r\n");
+    echo 'App terminates with the error';
+    exit(255);
+});
+
 /**
  * Handle
  */
