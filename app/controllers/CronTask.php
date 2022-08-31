@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Robot\Controllers;
@@ -9,7 +10,7 @@ class CronTask extends \Phalcon\Cli\Task
     {
         $results = $this->cron->runInForeground();
 
-        if(!empty($results)){
+        if (!empty($results)) {
             echo implode(PHP_EOL, $results);
         } else {
             echo $this->locale->_('no-tasks');

@@ -2,6 +2,9 @@
 
 namespace Phalcon\XMPPHP;
 
+/**
+ * XmppTransport
+ */
 class XmppTransport
 {
     protected $host;
@@ -14,14 +17,27 @@ class XmppTransport
     protected $subject;
     protected $header;
 
-    protected $conn;
+    protected XMPP $conn;
 
+    /**
+     * __construct
+     *
+     * @param array config
+     *
+     * @return void
+     */
     public function __construct(array $config)
     {
         $this->configure($config);
     }
 
-    function __destruct() {
+    /**
+     * __destruct
+     *
+     * @return void
+     */
+    public function __destruct()
+    {
         $this->conn->disconnect();
     }
 
@@ -40,7 +56,6 @@ class XmppTransport
             $this->conn = new XMPP($this->host, $this->port, $this->username, $this->password, $this->resource);
             $this->conn->connect();
             $this->conn->processUntil('session_start');
-            
         } catch (Exception $e) {
             die($e->getMessage());
         }
@@ -56,12 +71,11 @@ class XmppTransport
 
     public function send()
     {
-        if(!empty($this->content)){
-            $this->conn->message($this->recipient, $this->content, 'chat', $this->subject);
-            return true;
+        $result = false;
+        if (!empty($this->content)) {
+            $result = $this->conn->message($this->recipient, $this->content, 'chat', $this->subject);
         }
-        
-        return false;
+        return $result !== false;
     }
 
     public function header($header)
@@ -71,18 +85,18 @@ class XmppTransport
 
     public function subject($subject)
     {
-        $this->subject = $subject." ($this->header)";
+        $this->subject = $subject . " ($this->header)";
     }
 
-    public function content($data = []){
-
+    public function content($data = [])
+    {
         $result = '';
-        foreach($data as $row){
-            $result .=  implode(' ', $row)."\n";
+        foreach ($data as $row) {
+            $result .=  implode(' ', $row) . "\n";
         }
-
-        if(!empty($result)) $result = "$this->subject \n\r $result";
-
+        if (!empty($result)) {
+            $result = "$this->subject \n\r $result";
+        }
         $this->content = $result;
     }
 }
