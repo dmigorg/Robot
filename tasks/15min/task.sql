@@ -27,13 +27,6 @@ WITH rec AS (
     AND exam."ChangeRequestId" IS NULL
     -- Бюро и составы (обжалование)
     AND (points."ExamPointsOfOrderMseID" = 1 OR points."ExamPointsOfOrderMseID" IS NULL)
-    -- есть запись и явился
-    AND EXISTS (
-      SELECT 1 
-      FROM "ExaminationRecord" r
-      LEFT JOIN "ExaminationRecordExamination" er ON er."ExaminationRecordId" = r."Id"
-      WHERE er."ExaminationId" = exam."Id" AND r."WasAppeared" = TRUE
-    )  
    AND exam."ExamTime" BETWEEN current_date - INTERVAL '1 days' AND current_date + INTERVAL '1 day'
   ORDER BY org."Number"
 )
