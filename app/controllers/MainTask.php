@@ -26,7 +26,7 @@ class MainTask extends \Phalcon\Cli\Task
                 }
                 if (!in_array($args, Helper::tasksName())) {
                     echo $this->locale->_('task-wrong') . PHP_EOL;
-                    echo $this->locale->_('help');
+                    echo $this->locale->_('help') . PHP_EOL;
                     break;
                 }
 
