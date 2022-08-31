@@ -21,7 +21,7 @@ class MainTask extends \Phalcon\Cli\Task
                         echo "robot task $task - $description" . PHP_EOL;
                         echo " $time" . str_repeat(PHP_EOL, 2);
                     }
-                    echo $this->locale->_('help-task-name');
+                    echo $this->locale->_('help-task-name') . PHP_EOL;
                     break;
                 }
                 if (!in_array($args, Helper::tasksName())) {
