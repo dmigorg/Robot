@@ -11,9 +11,9 @@ class CronTask extends \Phalcon\Cli\Task
         $results = $this->cron->runInForeground();
 
         if (!empty($results)) {
-            echo implode(PHP_EOL, $results);
+            echo implode(PHP_EOL, $results) . PHP_EOL;
         } else {
-            echo $this->locale->_('no-tasks');
+            echo $this->locale->_('no-tasks') . PHP_EOL;
         }
     }
 }

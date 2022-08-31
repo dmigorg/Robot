@@ -27,7 +27,7 @@ class FatherTask extends \Phalcon\Cli\Task
             $content = $this->execCommand($command, $params->option);
         }
         if (empty($content)) {
-            echo $this->locale->_('empty', ['task' => $task]);
+            echo $this->locale->_('empty', ['task' => $task]) . PHP_EOL;
             return;
         }
 
@@ -35,7 +35,7 @@ class FatherTask extends \Phalcon\Cli\Task
 
         // Send message
         if ($message->send()) {
-            echo $this->locale->_('success', ['task' => $task]);
+            echo $this->locale->_('success', ['task' => $task]) . PHP_EOL;
         }
     }
 
