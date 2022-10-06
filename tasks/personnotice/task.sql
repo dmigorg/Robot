@@ -8,7 +8,8 @@ WITH rec AS (
     --из них возвращено по причине неполного перечня медицинских обследований
     req."DirectionReturnRemdDocId" IS NOT NULL AS "IsReturn",
     er."RecordId" > 0 AS "RecordExist",
-    "IsPDO" > 0 AS "PdoExist"
+    "IsPDO" > 0 AS "PdoExist",
+    "IsHome" > 0 AS "IsHome"
   FROM "Document" doc
   JOIN "Request" req ON req."DocumentID" = doc."ID"
   JOIN "Person" AS p ON p."PersonID" = COALESCE(req."RepresentativeID", req."RequesterID")
@@ -17,11 +18,12 @@ WITH rec AS (
   LEFT JOIN LATERAL (
     SELECT 
       COUNT(1) FILTER (WHERE er."Id" IS NOT NULL),
-      COUNT((SELECT 1 FROM "Examination" e WHERE e."Id"= ere."ExaminationId" AND e."TransferDate" IS NOT NULL))
+      COUNT((SELECT 1 FROM "Examination" e WHERE e."Id"= ere."ExaminationId" AND e."TransferDate" IS NOT NULL)),
+      COUNT(1) FILTER (WHERE er."ExaminationPlaceId" = 2)
     FROM "ExaminationRecord" er
     LEFT JOIN "ExaminationRecordExamination" ere ON ere."ExaminationRecordId" = er."Id" 
     WHERE er."OriginRequestId" = doc."ID"
-  ) AS er("RecordId", "IsPDO") ON TRUE
+  ) AS er("RecordId", "IsPDO", "IsHome") ON TRUE
   WHERE
     -- только направления
     req."RequestTypeID" IN (2,4,5)
@@ -41,7 +43,7 @@ WITH rec AS (
       LIMIT 1
     )
     -- по дате получения направления МСЭ(Э)
-    AND (doc."CreateTime" >= '20220701' AND doc."CreateTime" BETWEEN current_date - '1 month'::INTERVAL AND current_timestamp)
+    AND (doc."CreateTime" >= '20220701') AND doc."CreateTime" BETWEEN current_date - '1 month'::INTERVAL AND current_timestamp)
   ORDER BY org."Number"
 )
 , msg AS (
@@ -50,8 +52,8 @@ WITH rec AS (
       WHEN "IsReturn" AND NOT(pn."NoticeTypeIds" && '{2}') THEN 'Отсутствует "Уведомление о причинах возврата направления"'
       WHEN "IsRequest" = FALSE AND NOT(pn."NoticeTypeIds" && '{1}') THEN 'Отсутствует "Уведомление о регистрации направления на МСЭ"'
       WHEN "IsRequest" AND NOT(pn."NoticeTypeIds" && '{3}') THEN 'Отсутствует "Уведомление о регистрации заявления об обжаловании..."'
-      WHEN "RecordExist"  AND ("NullExamRecordsType4" > 0 OR NOT(pn."NoticeTypeIds" && '{4}')) THEN 'Отсутствует "Уведомление о проведении МСЭ (Приглашение)"'
-      WHEN "RecordExist" AND ("NullExamRecordsType5" > 0 OR NOT(pn."NoticeTypeIds" && '{5}')) THEN 'Отсутствует "Уведомление о проведении МСЭ (Уведомление о дате и времени проведения МСЭ)"'
+      WHEN "IsInPresence" AND "IsHome" = FALSE AND "RecordExist"  AND ("NullExamRecordsType4" > 0 OR NOT(pn."NoticeTypeIds" && '{4}')) THEN 'Отсутствует "Уведомление о проведении МСЭ (Приглашение)"'
+      WHEN ("IsInPresence" = FALSE OR ("IsInPresence" AND "IsHome")) AND "RecordExist" AND ("NullExamRecordsType5" > 0 OR NOT(pn."NoticeTypeIds" && '{5}')) THEN 'Отсутствует "Уведомление о проведении МСЭ (Уведомление о дате и времени проведения МСЭ)"'
       WHEN "PdoExist" AND ("NullExaminationSourceId" > 0 OR NOT(pn."NoticeTypeIds" && '{6}')) THEN 'Отсутствует "Уведомление о ПДО (Назначение ПДО)"'
       WHEN "IsInPresence" = FALSE AND "PdoExist" AND NOT(pn."NoticeTypeIds" && '{7}') THEN 'Отсутствует "Уведомление о ПДО (Ответ о назначении ПДО)"'
     ELSE NULL
