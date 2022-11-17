@@ -43,7 +43,7 @@ WITH rec AS (
       LIMIT 1
     )
     -- по дате получения направления МСЭ(Э)
-    AND (doc."CreateTime" >= '20220701') AND doc."CreateTime" BETWEEN current_date - '1 month'::INTERVAL AND current_timestamp)
+    AND ((doc."CreateTime" >= '20220701') AND doc."CreateTime" BETWEEN current_date - '1 month'::INTERVAL AND current_timestamp)
   ORDER BY org."Number"
 )
 , msg AS (
