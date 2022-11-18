@@ -54,7 +54,7 @@ WITH rec AS (
       WHEN "IsRequest" AND NOT(pn."NoticeTypeIds" && '{3}') THEN 'Отсутствует "Уведомление о регистрации заявления об обжаловании..."'
       WHEN "IsInPresence" AND "IsHome" = FALSE AND "RecordExist"  AND ("NullExamRecordsType4" > 0 OR NOT(pn."NoticeTypeIds" && '{4}')) THEN 'Отсутствует "Уведомление о проведении МСЭ (Приглашение)"'
       WHEN ("IsInPresence" = FALSE OR ("IsInPresence" AND "IsHome")) AND "RecordExist" AND ("NullExamRecordsType5" > 0 OR NOT(pn."NoticeTypeIds" && '{5}')) THEN 'Отсутствует "Уведомление о проведении МСЭ (Уведомление о дате и времени проведения МСЭ)"'
-      WHEN "PdoExist" AND ("NullExaminationSourceId" > 0 OR NOT(pn."NoticeTypeIds" && '{6}')) THEN 'Отсутствует "Уведомление о ПДО (Назначение ПДО)"'
+      WHEN "IsInPresence" = FALSE AND "PdoExist" AND ("NullExaminationSourceId" > 0 OR NOT(pn."NoticeTypeIds" && '{6}')) THEN 'Отсутствует "Уведомление о ПДО (Назначение ПДО)"'
       WHEN "IsInPresence" = FALSE AND "PdoExist" AND NOT(pn."NoticeTypeIds" && '{7}') THEN 'Отсутствует "Уведомление о ПДО (Ответ о назначении ПДО)"'
     ELSE NULL
     END AS message,
