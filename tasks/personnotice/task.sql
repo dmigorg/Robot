@@ -19,7 +19,7 @@ WITH rec AS (
     SELECT 
       COUNT(1) FILTER (WHERE er."Id" IS NOT NULL),
       COUNT((SELECT 1 FROM "Examination" e WHERE e."Id"= ere."ExaminationId" AND e."TransferDate" IS NOT NULL)),
-      COUNT(1) FILTER (WHERE er."ExaminationPlaceId" = 2)
+      COUNT(1) FILTER (WHERE er."ExaminationPlaceId" != 1)
     FROM "ExaminationRecord" er
     LEFT JOIN "ExaminationRecordExamination" ere ON ere."ExaminationRecordId" = er."Id" 
     WHERE er."OriginRequestId" = doc."ID"
